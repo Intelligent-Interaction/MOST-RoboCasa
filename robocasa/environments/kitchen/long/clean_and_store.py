@@ -67,16 +67,9 @@ class CleanAndStoreAfterMeal(Kitchen):
     def __init__(self, *args, **kwargs):
         self._reset_long_horizon_metric_tracker(initial_state=None)
 
-        layout_and_style_ids = kwargs.get("layout_and_style_ids")
-        layout_ids = kwargs.get("layout_ids")
-        style_ids = kwargs.get("style_ids")
-
-        if layout_and_style_ids is not None:
-            kwargs.pop("layout_ids", None)
-            kwargs.pop("style_ids", None)
-        elif layout_ids is None and style_ids is None:
-            kwargs["layout_ids"] = 2
-            kwargs["style_ids"] = 2
+        kwargs.pop("layout_ids", None)
+        kwargs.pop("style_ids", None)
+        kwargs["layout_and_style_ids"] = [(2, 2)]
 
         fixture_updates = deepcopy(
             kwargs.pop("update_fxtr_cfg_dict", None) or {}

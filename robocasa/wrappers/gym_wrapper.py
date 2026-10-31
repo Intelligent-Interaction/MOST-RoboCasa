@@ -382,6 +382,15 @@ class RoboCasaGymEnv(gym.Env):
 
         info["success"] = reward > 0
 
+        # Long-horizon semantic progress information.
+        # The task environment only provides the raw progress curve.
+        # PRM-style metrics are computed after the episode terminates in the
+        # evaluation script, so every task shares the same implementation.
+        get_metrics_fn = getattr(self.env, "get_long_horizon_metrics", None)
+
+        if callable(get_metrics_fn):
+            info["metrics"] = get_metrics_fn()
+
         return obs, reward, done, truncated, info
 
     def render(self):

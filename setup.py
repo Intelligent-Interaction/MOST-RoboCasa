@@ -37,7 +37,7 @@ setup(
     eager_resources=["*"],
     include_package_data=True,
     python_requires=">=3",
-    description="RoboCasa-Long tasks built on the RoboCasa365 simulator",
+    description="Unified RoboCasa365 and RoboCasa-Long environment for MOST",
     author="Soroush Nasiriany, Sepehr Nasiriany, Abhiram Maddukuri, Yuke Zhu",
     url="https://github.com/diqihe666/Robocasa-Long",
     author_email="robocasa@googlegroups.com",
