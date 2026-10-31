@@ -65,6 +65,27 @@ The main additions are:
 The repository uses the standard RoboCasa kitchen assets and RoboSuite
 backend. It does not redistribute a separate asset pack.
 
+## Changes from Upstream RoboCasa
+
+This repository retains the complete upstream RoboCasa codebase. The
+MOST-specific changes are localized to the following areas:
+
+| Area | Main paths | Changes in this fork |
+| --- | --- | --- |
+| RoboCasa365 task metrics | `robocasa/environments/kitchen/composite/` | Adds state-grounded semantic milestones and per-step long-horizon metric trackers to 32 Composite Seen and Composite Unseen tasks. |
+| RoboCasa-Long tasks | `robocasa/environments/kitchen/long/` | Adds `PackFruit`, `PrepareBreakfast`, and `CleanAndStoreAfterMeal`, including their scene configuration, success conditions, and progress trackers. |
+| Task registration | `robocasa/__init__.py` | Registers the three RoboCasa-Long environments so they can be created through the standard RoboCasa and RoboSuite interfaces. |
+| Gym integration | `robocasa/wrappers/gym_wrapper.py` | Adds the supported task's current long-horizon state to `info["metrics"]` on every `step()`. |
+| Shared process metrics | `robocasa/utils/prm_metrics.py` | Adds progress-curve preprocessing and the common PRM-style metrics used by both MOST evaluators. |
+| Validation | `tests/test_robocasa_long.py`, `tests/test_gym_long_metrics.py` | Adds startup checks for the three Long tasks and an end-to-end Gym metric-interface check for all 35 supported tasks. |
+| Package metadata and documentation | `setup.py`, `README.md` | Identifies this fork as the unified simulator dependency for MOST on RoboCasa365 and RoboCasa-Long. |
+
+The upstream asset format, asset downloader, robots, controllers, fixtures,
+and standard environment construction remain compatible. Instrumented tasks
+add `get_long_horizon_metrics()`, and their Gym `step()` result includes the
+`metrics` entry described below. Other upstream tasks retain their original
+behavior and do not receive a synthetic metric result.
+
 ## Supported Tasks
 
 ### RoboCasa365 Composite Seen
