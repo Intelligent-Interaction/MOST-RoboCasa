@@ -2,6 +2,17 @@ from robosuite.environments.base import make
 
 # Manipulation environments
 from robocasa.environments.kitchen.kitchen import Kitchen
+
+from robocasa.environments.kitchen.long.pack_fruit import (
+    PackFruit,
+)
+from robocasa.environments.kitchen.long.prepare_breakfast import (
+    PrepareBreakfast,
+)
+from robocasa.environments.kitchen.long.clean_and_store import (
+    CleanAndStoreAfterMeal,
+)
+
 from robocasa.environments.kitchen.composite.adding_ice_to_beverages.make_ice_lemonade import (
     MakeIceLemonade,
 )

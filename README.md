@@ -1,157 +1,256 @@
-<h1 align="center">RoboCasa</h1>
-<!-- ![alt text](https://github.com/UT-Austin-RPL/maple/blob/web/src/overview.png) -->
-<img src="docs/images/readme.webp" width="100%" />
+<h1 align="center">
+  MOST: Memory of Object States and Task Progress<br>
+  for Long-Horizon Mobile Manipulation
+</h1>
 
-**RoboCasa** is a large-scale simulation framework for training generally capable robots to perform everyday tasks. It was [originally released](https://robocasa.ai/assets/robocasa_rss24.pdf) in 2024 by UT Austin researchers. The latest iteration, **RoboCasa365**, builds upon the original release with significant new functionalities to support large-scale training and benchmarking in sim. Four pillars underlie RoboCasa365:
-- **Diverse tasks**: 365 tasks created with the guidance of large language models
-- **Diverse assets**: including 2,500+ kitchen scenes and 3,200+ 3D objects
-- **High-quality demonstrations**: including 600+ hours of human demonstrations in addition to 1,600+ hours of robot datasets created with automated trajectory tools
-- **Benchmarking support**: popular policy learning methods including Diffusion Policy, pi, and GR00T, plus user-submitted models on the [leaderboard](https://robocasa.ai/leaderboard.html)
+<p align="center">
+  Diqi He<sup>1,2</sup>, Jinbang Guo<sup>2</sup>, Yijun Shen<sup>2,3</sup>,
+  Zhiwei Yu<sup>2,*</sup>,<br>
+  Huan Yang<sup>2</sup>, Dingwen Zhang<sup>1,*</sup>, Junwei Han<sup>4</sup>,
+  Zhongyuan Wang<sup>2</sup>
+</p>
 
+<p align="center">
+  <sup>1</sup>Northwestern Polytechnical University &nbsp;&nbsp;
+  <sup>2</sup>Beijing Academy of Artificial Intelligence<br>
+  <sup>3</sup>East China Normal University &nbsp;&nbsp;
+  <sup>4</sup>Chongqing University of Posts and Telecommunications
+</p>
 
-This guide contains information about installation and setup. Please refer to the following resources for additional information:
+<p align="center">
+  <sup>*</sup>Corresponding authors
+</p>
 
-[**[Home page]**](https://robocasa.ai) &ensp; [**[Documentation]**](https://robocasa.ai/docs/introduction/overview.html) &ensp; [**[RoboCasa365 Paper]**](https://robocasa.ai/assets/robocasa365_iclr26.pdf) &ensp; [**[Original RoboCasa Paper]**](https://robocasa.ai/assets/robocasa_rss24.pdf) &ensp; [**[Leaderboard]**](https://robocasa.ai/leaderboard.html)
+<div align="center">
 
--------
-## Updates
-* [10/28/2026] The leaderboard now accepts [**agentic submissions**](https://robocasa.ai/leaderboard/agentic.html): new models or novel agentic harnesses built around a base policy.
-* [10/14/2026] Released the [**subtask annotation pipeline**](https://robocasa.ai/docs/build/html/use_cases/subtask_annotations.html), with labelers covering all 300 composite tasks. It generates per-frame subtask labels directly from each demo's simulation state.
-* [7/7/2026] Our target composite task datasets have been updated to include per-frame **subtask annotations**. Every timestep is labeled with a subtask index, atomic-skill name, stage (i.e. pick / place / navigate), and a natural-language instruction, to support hierarchical policy learning.
-* [5/12/2026] **v1.0.1**: Updated horizon lengths (1.5x increase) across all tasks for consistency. Please update to the latest version for running evals.
-* [4/6/2026] [**RoboCasa365 Leaderboard**](https://robocasa.ai/leaderboard.html) published, comparing generalist robot policies on the multi-task learning benchmark and open to community model submissions.
-* [2/18/2026] **v1.0**: RoboCasa365 release, with 365 tasks, 2500+ kitchen scenes, 2200+ hours of robot demonstration data, and benchmarking support.
-* [10/31/2024] **v0.2**: using RoboSuite `v1.5` as the backend, with improved support for custom robot composition, composite controllers, more teleoperation devices, photo-realistic rendering.
+[![Project Page](https://img.shields.io/badge/Project-Page-1f6feb?logo=githubpages&logoColor=white)](https://most-vla.github.io/)
+[![Paper](https://img.shields.io/badge/Paper-Coming_Soon-b31b1b?logo=arxiv&logoColor=white)](https://github.com/diqihe666/MOST-vla)
+[![Data](https://img.shields.io/badge/Data-RoboCasa--Long-ffcc4d?logo=huggingface&logoColor=black)](https://huggingface.co/datasets/diqihe666/robocasa_long)
+[![Policy Code](https://img.shields.io/badge/Policy_Code-MOST--VLA-181717?logo=github&logoColor=white)](https://github.com/diqihe666/MOST-vla)
 
-## Table of Contents
-- [Updates](#updates)
-- [Installation](#installation)
-- [Basic Usage](#basic-usage)
-- [Tasks, datasets, policy learning, and additional use cases](#tasks-datasets-policy-learning-and-additional-use-cases)
-- [Questions](#questions)
-- [License](#license)
-- [Citation](#citation)
+</div>
 
--------
+---
+
+<h2 align="center">RoboCasa-Long Simulator</h2>
+
+<p align="center">
+  The official long-horizon simulation environment for MOST, built on RoboCasa365
+</p>
+
+## Overview
+
+RoboCasa-Long is the simulation environment used to study long-horizon mobile
+manipulation in MOST. It extends
+[RoboCasa365](https://github.com/robocasa/robocasa) with three tasks that require
+the robot to navigate between multiple kitchen areas and complete a sequence of
+semantically related manipulations.
+
+This repository is a minimal fork of RoboCasa. The original environments,
+robots, controllers, fixtures, objects, scripts, and assets remain unchanged.
+The RoboCasa-Long release adds only:
+
+- three task definitions under `robocasa/environments/kitchen/long/`;
+- task registration in `robocasa/__init__.py`; and
+- `tests/test_robocasa_long.py`, a lightweight environment startup test.
+
+RoboCasa-Long does not redistribute a separate asset pack. It uses the standard
+RoboCasa kitchen assets and the same RoboSuite backend as RoboCasa365.
+
+## Tasks
+
+| Task | Default scene | Description |
+| --- | --- | --- |
+| `PackFruit` | Layout 7, style 7 | Collect six fruits from three kitchen areas and pack them into one tupperware container. |
+| `PrepareBreakfast` | Layout 4, style 4 | Prepare toast, milk, and fruit, then arrange the completed breakfast on the dining counter. |
+| `CleanAndStoreAfterMeal` | Layout 2, style 2 | Store food, organize pantry items, and move the pan and sponge into the island sink. |
+
+Each task exposes the standard RoboCasa success interface and a
+`get_long_horizon_metrics()` method. The latter reports success rate (`SR`),
+ordered progress (`OPS`), unordered progress (`UPS`), normalized completion
+time (`NCT`), and the per-step progress curve.
+
 ## Installation
-RoboCasa works across all major computing platforms. The easiest way to set up is through the [Anaconda](https://www.anaconda.com/) package management system. Follow the instructions below to install:
-1. Set up conda environment:
 
-   ```sh
-   conda create -c conda-forge -n robocasa python=3.11
-   ```
-2. Activate conda environment:
-   ```sh
-   conda activate robocasa
-   ```
-3. Clone and setup robosuite dependency (**important: use the master branch!**):
+The commands below create a clean environment from scratch. Python 3.11 is
+recommended to match the upstream RoboCasa setup.
 
-   ```sh
-   git clone https://github.com/ARISE-Initiative/robosuite
-   cd robosuite
-   pip install -e .
-   ```
-4. Clone and setup this repo:
+### 1. Create the Conda environment
 
-   ```sh
-   cd ..
-   git clone https://github.com/robocasa/robocasa
-   cd robocasa
-   pip install -e .
-   pip install pre-commit; pre-commit install           # Optional: set up code formatter.
+```bash
+conda create -c conda-forge -n robocasa python=3.11 -y
+conda activate robocasa
+```
 
-   (optional: if running into issues with numba/numpy, run: conda install -c numba numba=0.56.4 -y)
-   ```
-5. Install the package and download assets:
-   ```sh
-   python -m robocasa.scripts.setup_macros              # Set up system variables.
-   python -m robocasa.scripts.download_kitchen_assets   # Caution: Assets to be downloaded are around 10GB.
-   ```
+### 2. Install RoboSuite
 
--------
+RoboCasa currently uses the RoboSuite development branch. Install it in
+editable mode:
+
+```bash
+git clone https://github.com/ARISE-Initiative/robosuite.git
+cd robosuite
+pip install -e .
+cd ..
+```
+
+### 3. Install RoboCasa-Long
+
+This repository already contains the complete RoboCasa codebase, so do not
+clone and install a second copy of the upstream `robocasa` package in the same
+environment.
+
+```bash
+git clone https://github.com/diqihe666/Robocasa-Long.git
+cd Robocasa-Long
+pip install -e .
+```
+
+If an editable upstream RoboCasa checkout is already installed, running
+`pip install -e .` from this repository switches the environment to this fork.
+
+### 4. Configure RoboCasa and download assets
+
+Run the standard RoboCasa setup commands from the RoboCasa-Long repository
+root:
+
+```bash
+python -m robocasa.scripts.setup_macros
+python -m robocasa.scripts.download_kitchen_assets
+```
+
+The kitchen asset download is approximately 10 GB. The assets are maintained
+by the RoboCasa project and retain their original license.
+
+## Verify the Installation
+
+The included smoke test creates and resets each Long task once. It does not
+load a policy checkpoint, run a rollout, or download the MOST training data.
+
+```bash
+conda activate robocasa
+cd /path/to/Robocasa-Long
+python tests/test_robocasa_long.py
+```
+
+A successful installation prints:
+
+```text
+[PASS] PackFruit
+[PASS] PrepareBreakfast
+[PASS] CleanAndStoreAfterMeal
+
+All 3 RoboCasa-Long tasks started successfully.
+```
+
+The test defaults to `MUJOCO_GL=egl`. Set `MUJOCO_GL` before running the script
+if a different MuJoCo rendering backend is required on your system.
+
 ## Basic Usage
 
-### Gym wrapper
-You can create environments using gym wrappers and run rollouts:
-```py
-import gymnasium as gym
-import robocasa
-from robocasa.utils.env_utils import run_random_rollouts
+Importing `robocasa` registers all three tasks with RoboSuite. The following
+example creates and resets `PackFruit` without starting a renderer:
 
-env = gym.make(
-    "robocasa/PickPlaceCounterToCabinet",
-    split="pretrain", # use 'pretrain' or 'target' kitchen scenes and objects
-    seed=0 # seed environment as needed. set seed=None to run unseeded
+```python
+import robocasa  # noqa: F401
+import robosuite
+from robosuite.controllers import load_composite_controller_config
+
+
+env = robosuite.make(
+    env_name="PackFruit",
+    robots="PandaOmron",
+    controller_configs=load_composite_controller_config(robot="PandaOmron"),
+    seed=7,
+    horizon=10,
+    obj_instance_split="target",
+    has_renderer=False,
+    has_offscreen_renderer=False,
+    ignore_done=True,
+    use_object_obs=True,
+    use_camera_obs=False,
+    control_freq=20,
 )
 
-# run rollouts with random actions and save video
-run_random_rollouts(
-    env, num_rollouts=3, num_steps=100, video_path="/tmp/test.mp4"
-)
+observation = env.reset()
+print(sorted(observation))
+env.close()
 ```
 
-### Play back sample demonstrations of tasks
-**(Mac users: for these scripts, prepend the "python" command with "mj": `mjpython ...`)**
+Replace `PackFruit` with `PrepareBreakfast` or
+`CleanAndStoreAfterMeal` to create the other environments.
 
-Select a task and play back a sample demonstration for the selected task:
+## Repository Structure
+
+```text
+robocasa/
+  environments/kitchen/long/
+    pack_fruit.py
+    prepare_breakfast.py
+    clean_and_store.py
+  __init__.py                    # Registers the three Long tasks
+tests/
+  test_robocasa_long.py          # Creates and resets every Long task
 ```
-python -m robocasa.demos.demo_tasks
-```
 
-### Explore kitchen scenes
-Explore 2500+ kitchen scenes:
-```
-python -m robocasa.demos.demo_kitchen_scenes
-```
+All other source files are inherited from the upstream RoboCasa repository.
 
-### Explore library of 2500+ objects
-View and interact with both human-designed and AI-generated objects:
-```
-python -m robocasa.demos.demo_objects
-```
-Note: By default, this demo shows objaverse objects. To view AI-generated objects, add the flag `--obj_types aigen`.
+## Training Data and Policy Code
 
-### Teleoperate the robot
-Control the robot directly, either through a keyboard controller or spacemouse. This script renders the robot semi-translucent in order to minimize occlusions and enable better visibility.
-```
-python -m robocasa.demos.demo_teleop
-```
-Note: If using SpaceMouse, you may need to modify the product ID to your appropriate model, setting `SPACEMOUSE_PRODUCT_ID` in `robocasa/macros_private.py`.
+- RoboCasa-Long demonstrations and memory annotations:
+  [diqihe666/robocasa_long](https://huggingface.co/datasets/diqihe666/robocasa_long)
+- MOST training, checkpoint export, and inference code:
+  [diqihe666/MOST-vla](https://github.com/diqihe666/MOST-vla)
 
--------
-## Tasks, datasets, policy learning, and additional use cases
-Please refer to the [documentation page](https://robocasa.ai/docs/introduction/overview.html) for information about tasks, datasets, benchmarking, and more.
+The policy repository contains the complete data preparation, training,
+checkpoint export, model-server, and evaluation commands.
 
--------
-## Questions
-If you have any questions about RoboCasa, reach out at [robocasa@googlegroups.com](mailto:robocasa@googlegroups.com).
+## Acknowledgements
 
--------
-## License
-Code: [MIT License](https://opensource.org/license/mit)
+RoboCasa-Long is built directly on
+[RoboCasa and RoboCasa365](https://github.com/robocasa/robocasa), with
+[RoboSuite](https://github.com/ARISE-Initiative/robosuite) as the simulation
+backend. We thank the respective authors and contributors for releasing their
+code and assets.
 
-Assets and Datasets: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.en)
-
--------
 ## Citation
 
-**RoboCasa365:**
+If you use RoboCasa-Long, please cite MOST and the upstream RoboCasa projects.
 
 ```bibtex
+@article{he2026most,
+  title   = {MOST: Memory of Object States and Task Progress
+             for Long-Horizon Mobile Manipulation},
+  author  = {He, Diqi and Guo, Jinbang and Shen, Yijun and
+             Yu, Zhiwei and Yang, Huan and Zhang, Dingwen and
+             Han, Junwei and Wang, Zhongyuan},
+  year    = {2026},
+  note    = {Under review}
+}
+
 @inproceedings{robocasa365,
-  title={RoboCasa365: A Large-Scale Simulation Framework for Training and Benchmarking Generalist Robots},
-  author={Soroush Nasiriany and Sepehr Nasiriany and Abhiram Maddukuri and Yuke Zhu},
-  booktitle={International Conference on Learning Representations (ICLR)},
-  year={2026}
+  title     = {RoboCasa365: A Large-Scale Simulation Framework for Training
+               and Benchmarking Generalist Robots},
+  author    = {Nasiriany, Soroush and Nasiriany, Sepehr and
+               Maddukuri, Abhiram and Zhu, Yuke},
+  booktitle = {International Conference on Learning Representations},
+  year      = {2026}
+}
+
+@inproceedings{robocasa2024,
+  title     = {RoboCasa: Large-Scale Simulation of Everyday Tasks for
+               Generalist Robots},
+  author    = {Nasiriany, Soroush and Maddukuri, Abhiram and Zhang, Lance and
+               Parikh, Adeet and Lo, Aaron and Joshi, Abhishek and
+               Mandlekar, Ajay and Zhu, Yuke},
+  booktitle = {Robotics: Science and Systems},
+  year      = {2024}
 }
 ```
 
-**RoboCasa (Original Release):**
+## License
 
-```bibtex
-@inproceedings{robocasa2024,
-  title={RoboCasa: Large-Scale Simulation of Everyday Tasks for Generalist Robots},
-  author={Soroush Nasiriany and Abhiram Maddukuri and Lance Zhang and Adeet Parikh and Aaron Lo and Abhishek Joshi and Ajay Mandlekar and Yuke Zhu},
-  booktitle={Robotics: Science and Systems (RSS)},
-  year={2024}
-}
+The code is released under the [MIT License](LICENSE), consistent with
+upstream RoboCasa. RoboCasa assets and datasets are licensed separately under
+their original terms; see the upstream
+[RoboCasa repository](https://github.com/robocasa/robocasa) for details.
