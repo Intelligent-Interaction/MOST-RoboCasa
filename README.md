@@ -285,8 +285,7 @@ code and assets.
 
 ## Citation
 
-If you use this environment, please cite MOST and the upstream RoboCasa
-projects.
+If you use this environment, please cite MOST.
 
 ```bibtex
 @article{he2026most,
@@ -297,25 +296,6 @@ projects.
              Han, Junwei and Wang, Zhongyuan},
   year    = {2026},
   note    = {Under review}
-}
-
-@inproceedings{robocasa365,
-  title     = {RoboCasa365: A Large-Scale Simulation Framework for Training
-               and Benchmarking Generalist Robots},
-  author    = {Nasiriany, Soroush and Nasiriany, Sepehr and
-               Maddukuri, Abhiram and Zhu, Yuke},
-  booktitle = {International Conference on Learning Representations},
-  year      = {2026}
-}
-
-@inproceedings{robocasa2024,
-  title     = {RoboCasa: Large-Scale Simulation of Everyday Tasks for
-               Generalist Robots},
-  author    = {Nasiriany, Soroush and Maddukuri, Abhiram and Zhang, Lance and
-               Parikh, Adeet and Lo, Aaron and Joshi, Abhishek and
-               Mandlekar, Ajay and Zhu, Yuke},
-  booktitle = {Robotics: Science and Systems},
-  year      = {2024}
 }
 ```
 
