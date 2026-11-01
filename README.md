@@ -169,8 +169,8 @@ This repository contains the complete RoboCasa package. Do not install a
 second upstream `robocasa` checkout in the same environment.
 
 ```bash
-git clone https://github.com/diqihe666/Robocasa-Long.git
-cd Robocasa-Long
+git clone https://github.com/diqihe666/MOST-RoboCasa.git
+cd MOST-RoboCasa
 pip install -e .
 ```
 
@@ -181,7 +181,7 @@ must be the copy imported by Python. Verify the resolved package path:
 python -c "import robocasa; print(robocasa.__file__)"
 ```
 
-The printed path must point into this `Robocasa-Long/robocasa` checkout. If it
+The printed path must point into this `MOST-RoboCasa/robocasa` checkout. If it
 points to another checkout, remove that path from `PYTHONPATH` or uninstall
 the conflicting editable package before continuing.
 
@@ -203,7 +203,7 @@ First, create and reset the three RoboCasa-Long tasks:
 
 ```bash
 conda activate robocasa
-cd /path/to/Robocasa-Long
+cd /path/to/MOST-RoboCasa
 python tests/test_robocasa_long.py
 ```
 

@@ -39,7 +39,7 @@ setup(
     python_requires=">=3",
     description="Unified RoboCasa365 and RoboCasa-Long environment for MOST",
     author="Soroush Nasiriany, Sepehr Nasiriany, Abhiram Maddukuri, Yuke Zhu",
-    url="https://github.com/diqihe666/Robocasa-Long",
+    url="https://github.com/diqihe666/MOST-RoboCasa",
     author_email="robocasa@googlegroups.com",
     version="1.0.1",
     long_description=long_description,
