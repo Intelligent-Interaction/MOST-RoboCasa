@@ -24,7 +24,7 @@
 <div align="center">
 
 [![Project Page](https://img.shields.io/badge/Project-Page-1f6feb?logo=githubpages&logoColor=white)](https://most-vla.github.io/)
-[![Paper](https://img.shields.io/badge/Paper-Coming_Soon-b31b1b?logo=arxiv&logoColor=white)](https://github.com/diqihe666/MOST-vla)
+[![Paper](https://img.shields.io/badge/Paper-arXiv-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/pdf/2611.00734)
 [![Data](https://img.shields.io/badge/%F0%9F%A4%97_Data-RoboCasa--Long-ffcc4d)](https://huggingface.co/datasets/diqihe666/robocasa_long)
 [![Policy Code](https://img.shields.io/badge/Policy_Code-MOST--VLA-181717?logo=github&logoColor=white)](https://github.com/diqihe666/MOST-vla)
 
@@ -295,7 +295,9 @@ If you use this environment, please cite MOST.
              Yu, Zhiwei and Yang, Huan and Zhang, Dingwen and
              Han, Junwei and Wang, Zhongyuan},
   year    = {2026},
-  note    = {Under review}
+  eprint  = {2611.00734},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.RO}
 }
 ```
 
