@@ -26,7 +26,7 @@
 [![Project Page](https://img.shields.io/badge/Project-Page-1f6feb?logo=githubpages&logoColor=white)](https://most-vla.github.io/)
 [![Paper](https://img.shields.io/badge/Paper-arXiv-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/pdf/2611.00734)
 [![Data](https://img.shields.io/badge/%F0%9F%A4%97_Data-RoboCasa--Long-ffcc4d)](https://huggingface.co/datasets/diqihe666/robocasa_long)
-[![Policy Code](https://img.shields.io/badge/Policy_Code-MOST--VLA-181717?logo=github&logoColor=white)](https://github.com/diqihe666/MOST-vla)
+[![Policy Code](https://img.shields.io/badge/Policy_Code-MOST--VLA-181717?logo=github&logoColor=white)](https://github.com/Intelligent-Interaction/MOST-vla)
 
 </div>
 
@@ -169,7 +169,7 @@ This repository contains the complete RoboCasa package. Do not install a
 second upstream `robocasa` checkout in the same environment.
 
 ```bash
-git clone https://github.com/diqihe666/MOST-RoboCasa.git
+git clone https://github.com/Intelligent-Interaction/MOST-RoboCasa.git
 cd MOST-RoboCasa
 pip install -e .
 ```
@@ -270,7 +270,7 @@ tests/
 - RoboCasa-Long demonstrations and memory annotations:
   [diqihe666/robocasa_long](https://huggingface.co/datasets/diqihe666/robocasa_long)
 - MOST training, checkpoint export, model-server, and evaluation code:
-  [diqihe666/MOST-vla](https://github.com/diqihe666/MOST-vla)
+  [Intelligent-Interaction/MOST-vla](https://github.com/Intelligent-Interaction/MOST-vla)
 
 The policy repository contains the complete step-by-step workflows for
 RoboCasa365 and RoboCasa-Long.
